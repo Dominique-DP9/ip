@@ -36,7 +36,7 @@ public class KleeBot {
 
     // Impt stuff
 
-    public ArrayList<String> list = new ArrayList<>();
+    public ArrayList<Task> list = new ArrayList<>();
 
     void echo(String input) {
         System.out.println(lineBreak);
@@ -46,15 +46,31 @@ public class KleeBot {
 
     void addToList(String input) {
         System.out.println(lineBreak);
-        list.add(input);
+        list.add(new Task(input));
         System.out.println("OK! Adding to your list!: " + input);
         System.out.println(lineBreak);
+    }
+
+    void markItem(String[] input) {
+        System.out.println(lineBreak); System.out.println("You're amazing, friend!! I've marked this task as DHONE!!:");
+        Task task = list.get(Integer.parseInt(input[1]) - 1);
+        task.markAsDone();
+        System.out.println("\t[" + task.getStatusIcon() + "] " + task.getDescription());
+        System.out.println(lineBreak);
+    }
+
+    void unmarkItem(String[] input) {
+        System.out.println(lineBreak); System.out.println("AWW, it's alright! You can work on this the next time!:");
+        Task task = list.get(Integer.parseInt(input[1]) - 1);
+        task.unmarkAsDone();
+        System.out.println("\t[" + task.getStatusIcon() + "] " + task.getDescription()); System.out.println(lineBreak);
     }
 
     void readList() {
         System.out.println(lineBreak + "\nHere are a list of things you've made!!");
         for (int i=0; i<list.size(); i++) {
-            System.out.println(i+1 + ". " + list.get(i));
+            Task task = list.get(i);
+            System.out.println(i+1 + ". [" + task.getStatusIcon() + "] " + task.getDescription());
         }
         System.out.println(lineBreak);
     }
@@ -79,6 +95,12 @@ public class KleeBot {
                 case "list":
                     klee.readList();
                     break;
+                case "mark":
+                    klee.markItem(splitted);
+                    break;
+                case "unmark":
+                    klee.unmarkItem(splitted);
+                    break;
                 default:
                     // klee.echo(userInput);
                     klee.addToList(userInput);
@@ -90,4 +112,3 @@ public class KleeBot {
 
     }
 }
-
