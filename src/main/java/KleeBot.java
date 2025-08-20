@@ -1,6 +1,8 @@
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class KleeBot {
 
@@ -44,18 +46,62 @@ public class KleeBot {
         System.out.println(lineBreak);
     }
 
-    void addToList(String input) {
+    void addToList(Task task) {
         System.out.println(lineBreak);
-        list.add(new Task(input));
-        System.out.println("OK! Adding to your list!: " + input);
+        list.add(task);
+        System.out.println("OK! Adding this to your list!: ");
+        System.out.println("\t" + task.toString());
+        System.out.println("Now you have " + list.size() + " tasks in the list!!! Felicitations!!");
         System.out.println(lineBreak);
     }
+
+    // different tasks handlers
+
+    void handleTodo(String[] input) {
+        String taskDescription = Arrays.stream(input, 1, input.length)
+                                       .reduce("", (a, b) -> a + " " + b);
+        addToList(new ToDo(taskDescription));
+    }
+
+    void handleDeadline(String[] input) {
+        int byIndex = IntStream.range(0, input.length)
+                                        .filter(i -> input[i].equals("/by"))
+                                        .findFirst()
+                                        .orElse(-1);
+
+        String taskDescription = Arrays.stream(input, 1, byIndex)
+                .reduce("", (a, b) -> a + " " + b);
+        String by = Arrays.stream(input, byIndex + 1, input.length)
+                .reduce("", (a, b) -> a + " " + b);
+        addToList(new Deadline(taskDescription, by));
+    }
+
+    void handleEvent(String[] input) {
+        int fromIndex = IntStream.range(0, input.length)
+                .filter(i -> input[i].equals("/from"))
+                .findFirst()
+                .orElse(-1);
+
+        int toIndex = IntStream.range(fromIndex, input.length)
+                .filter(i -> input[i].equals("/to"))
+                .findFirst()
+                .orElse(-1);
+
+        String taskDescription = Arrays.stream(input, 1, fromIndex)
+                .reduce("", (a, b) -> a + " " + b);
+        String from = Arrays.stream(input, fromIndex + 1, toIndex)
+                .reduce("", (a, b) -> a + " " + b);
+        String to = Arrays.stream(input, toIndex + 1, input.length)
+                .reduce("", (a, b) -> a + " " + b);
+        addToList(new Event(taskDescription, from, to));
+    }
+
 
     void markItem(String[] input) {
         System.out.println(lineBreak); System.out.println("You're amazing, friend!! I've marked this task as DHONE!!:");
         Task task = list.get(Integer.parseInt(input[1]) - 1);
         task.markAsDone();
-        System.out.println("\t[" + task.getStatusIcon() + "] " + task.getDescription());
+        System.out.println("\t" + task.toString());
         System.out.println(lineBreak);
     }
 
@@ -63,14 +109,14 @@ public class KleeBot {
         System.out.println(lineBreak); System.out.println("AWW, it's alright! You can work on this the next time!:");
         Task task = list.get(Integer.parseInt(input[1]) - 1);
         task.unmarkAsDone();
-        System.out.println("\t[" + task.getStatusIcon() + "] " + task.getDescription()); System.out.println(lineBreak);
+        System.out.println("\t" + task.toString()); System.out.println(lineBreak);
     }
 
     void readList() {
         System.out.println(lineBreak + "\nHere are a list of things you've made!!");
         for (int i=0; i<list.size(); i++) {
             Task task = list.get(i);
-            System.out.println(i+1 + ". [" + task.getStatusIcon() + "] " + task.getDescription());
+            System.out.println(i+1 + "." + task.toString());
         }
         System.out.println(lineBreak);
     }
@@ -83,15 +129,31 @@ public class KleeBot {
         KleeBot klee = new KleeBot();
         Scanner textScanner = new Scanner(System.in);
 
+        enum TaskTypes {
+            TODO,
+            DEADLINE,
+            EVENT
+        }
+
         // Program Entry
         klee.greet();
 
         loop: while (true) { // need to label the loop a name to break out of it w switch-case
             String userInput = textScanner.nextLine();
-            String[] splitted = userInput.split(" ");
+            String[] splitted = userInput.split("\\s+");
+            for (String word : splitted) System.out.println(word);
             switch (splitted[0]) {
                 case "bye":
                     break loop;
+                case "todo":
+                    klee.handleTodo(splitted);
+                    break;
+                case "deadline":
+                    klee.handleDeadline(splitted);
+                    break;
+                case "event":
+                    klee.handleEvent(splitted);
+                    break;
                 case "list":
                     klee.readList();
                     break;
@@ -102,8 +164,8 @@ public class KleeBot {
                     klee.unmarkItem(splitted);
                     break;
                 default:
-                    // klee.echo(userInput);
-                    klee.addToList(userInput);
+                    klee.echo(userInput);
+//                    klee.addToList(userInput);
             }
         }
 
