@@ -1,4 +1,5 @@
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class KleeBot {
@@ -33,25 +34,55 @@ public class KleeBot {
         System.out.println(lineBreak);
     }
 
+    // Impt stuff
+
+    public ArrayList<String> list = new ArrayList<>();
+
     void echo(String input) {
         System.out.println(lineBreak);
         System.out.println("\"" + input + "\"" + ", hehee!");
         System.out.println(lineBreak);
     }
 
-    public static void main(String[] args) {
+    void addToList(String input) {
+        System.out.println(lineBreak);
+        list.add(input);
+        System.out.println("OK! Adding to your list!: " + input);
+        System.out.println(lineBreak);
+    }
 
+    void readList() {
+        System.out.println(lineBreak + "\nHere are a list of things you've made!!");
+        for (int i=0; i<list.size(); i++) {
+            System.out.println(i+1 + ". " + list.get(i));
+        }
+        System.out.println(lineBreak);
+    }
+
+
+
+
+    public static void main(String[] args) {
+        // Initialise the klee
         KleeBot klee = new KleeBot();
         Scanner textScanner = new Scanner(System.in);
-
 
         // Program Entry
         klee.greet();
 
-        while (true) {
+        loop: while (true) { // need to label the loop a name to break out of it w switch-case
             String userInput = textScanner.nextLine();
-            if (userInput.equals("bye")) break;
-            klee.echo(userInput);
+            String[] splitted = userInput.split(" ");
+            switch (splitted[0]) {
+                case "bye":
+                    break loop;
+                case "list":
+                    klee.readList();
+                    break;
+                default:
+                    // klee.echo(userInput);
+                    klee.addToList(userInput);
+            }
         }
 
         // Program Exit
@@ -59,3 +90,4 @@ public class KleeBot {
 
     }
 }
+
