@@ -141,7 +141,7 @@ public class KleeBot {
         loop: while (true) { // need to label the loop a name to break out of it w switch-case
             String userInput = textScanner.nextLine();
             String[] splitted = userInput.split("\\s+");
-            for (String word : splitted) System.out.println(word);
+//            for (String word : splitted) System.out.println(word);
             switch (splitted[0]) {
                 case "bye":
                     break loop;
