@@ -36,6 +36,7 @@ public class KleeBot {
         System.out.println(lineBreak);
     }
 
+
     // Impt stuff
 
     public ArrayList<Task> list = new ArrayList<>();
@@ -43,6 +44,12 @@ public class KleeBot {
     void echo(String input) {
         System.out.println(lineBreak);
         System.out.println("\"" + input + "\"" + ", hehee!");
+        System.out.println(lineBreak);
+    }
+
+    void throwTantrum() {
+        System.out.println(lineBreak);
+        System.out.println("Huh?? I'm not sure I quite understand o(╥﹏╥)o... could you be more specific please?");
         System.out.println(lineBreak);
     }
 
@@ -57,18 +64,21 @@ public class KleeBot {
 
     // different tasks handlers
 
-    void handleTodo(String[] input) {
+    void handleTodo(String[] input) throws KleeExceptions{
+        if (input.length <= 1) throw new KleeExceptions("Hey! Gimmie more details about this task!");
         String taskDescription = Arrays.stream(input, 1, input.length)
                                        .reduce("", (a, b) -> a + " " + b);
         addToList(new ToDo(taskDescription));
     }
 
-    void handleDeadline(String[] input) {
+    void handleDeadline(String[] input) throws KleeExceptions {
+        if (input.length <= 1) throw new KleeExceptions("Hey! Gimmie more details about this task!");
         int byIndex = IntStream.range(0, input.length)
                                         .filter(i -> input[i].equals("/by"))
                                         .findFirst()
                                         .orElse(-1);
-
+        if (byIndex == -1) throw new KleeExceptions("Include a timing you'll finish your task by! Using /by ...");
+        if (byIndex == input.length - 1) throw new KleeExceptions("NonoNonoNO! Tell me WHEN you're gonna finish the task by!! Share with me the DATE!!");
         String taskDescription = Arrays.stream(input, 1, byIndex)
                 .reduce("", (a, b) -> a + " " + b);
         String by = Arrays.stream(input, byIndex + 1, input.length)
@@ -76,16 +86,24 @@ public class KleeBot {
         addToList(new Deadline(taskDescription, by));
     }
 
-    void handleEvent(String[] input) {
+    void handleEvent(String[] input) throws KleeExceptions{
+        if (input.length <= 1) throw new KleeExceptions("Hey! Gimmie more details about this task!");
         int fromIndex = IntStream.range(0, input.length)
                 .filter(i -> input[i].equals("/from"))
                 .findFirst()
                 .orElse(-1);
 
+        if (fromIndex == -1) throw new KleeExceptions("Include a timing the task starts from! Using /from ...");
+        // test is separated from others bc the toIndex stream uses fromIndex
+
         int toIndex = IntStream.range(fromIndex, input.length)
                 .filter(i -> input[i].equals("/to"))
                 .findFirst()
                 .orElse(-1);
+
+        if (toIndex == -1) throw new KleeExceptions("Include a timing when the task ends! Using /to ...");
+        if (fromIndex == toIndex - 1) throw new KleeExceptions("Gimmie more info on when it starts!!");
+        if (toIndex == input.length - 1) throw new KleeExceptions("Gimmie more info on when it ends!!");
 
         String taskDescription = Arrays.stream(input, 1, fromIndex)
                 .reduce("", (a, b) -> a + " " + b);
@@ -121,6 +139,14 @@ public class KleeBot {
         System.out.println(lineBreak);
     }
 
+//    void delete(String[] input) {
+//        System.out.println(lineBreak); System.out.println("Okay!!! I've removed this item from your list:");
+//        Task task = list.get(Integer.parseInt(input[1]) - 1);
+//        System.out.println("\t" + task.toString());
+//        list.remove(task);
+//        System.out.println("Now you have " + list.size() + " tasks left in the list!!! ");
+//        System.out.println(lineBreak);
+//    }
 
 
 
@@ -142,30 +168,39 @@ public class KleeBot {
             String userInput = textScanner.nextLine();
             String[] splitted = userInput.split("\\s+");
 //            for (String word : splitted) System.out.println(word);
-            switch (splitted[0]) {
-                case "bye":
-                    break loop;
-                case "todo":
-                    klee.handleTodo(splitted);
-                    break;
-                case "deadline":
-                    klee.handleDeadline(splitted);
-                    break;
-                case "event":
-                    klee.handleEvent(splitted);
-                    break;
-                case "list":
-                    klee.readList();
-                    break;
-                case "mark":
-                    klee.markItem(splitted);
-                    break;
-                case "unmark":
-                    klee.unmarkItem(splitted);
-                    break;
-                default:
-                    klee.echo(userInput);
-//                    klee.addToList(userInput);
+            try {
+                switch (splitted[0]) {
+                    case "bye":
+                        break loop;
+                    case "todo":
+                        klee.handleTodo(splitted);
+                        break;
+                    case "deadline":
+                        klee.handleDeadline(splitted);
+                        break;
+                    case "event":
+                        klee.handleEvent(splitted);
+                        break;
+                    case "list":
+                        klee.readList();
+                        break;
+                    case "mark":
+                        klee.markItem(splitted);
+                        break;
+                    case "unmark":
+                        klee.unmarkItem(splitted);
+                        break;
+//                    case "delete":
+//                        klee.delete(splitted);
+//                        break;
+                    case "echo":
+                        klee.echo(userInput);
+                    default:
+                        klee.throwTantrum();
+                        //                    klee.addToList(userInput);
+                }
+            } catch (KleeExceptions e) {
+                System.out.println(e.getMessage());
             }
         }
 

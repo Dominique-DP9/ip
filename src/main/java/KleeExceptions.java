@@ -1,4 +1,5 @@
-package PACKAGE_NAME;
-
-public class KleeExceptions {
+public class KleeExceptions extends Exception {
+    public KleeExceptions(String m) {
+        super(m);
+    }
 }
