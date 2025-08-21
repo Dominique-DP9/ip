@@ -139,14 +139,14 @@ public class KleeBot {
         System.out.println(lineBreak);
     }
 
-//    void delete(String[] input) {
-//        System.out.println(lineBreak); System.out.println("Okay!!! I've removed this item from your list:");
-//        Task task = list.get(Integer.parseInt(input[1]) - 1);
-//        System.out.println("\t" + task.toString());
-//        list.remove(task);
-//        System.out.println("Now you have " + list.size() + " tasks left in the list!!! ");
-//        System.out.println(lineBreak);
-//    }
+    void delete(String[] input) {
+        System.out.println(lineBreak); System.out.println("Okay!!! I've removed this item from your list:");
+        Task task = list.get(Integer.parseInt(input[1]) - 1);
+        System.out.println("\t" + task.toString());
+        list.remove(task);
+        System.out.println("Now you have " + list.size() + " tasks left in the list!!! ");
+        System.out.println(lineBreak);
+    }
 
 
 
@@ -190,9 +190,9 @@ public class KleeBot {
                     case "unmark":
                         klee.unmarkItem(splitted);
                         break;
-//                    case "delete":
-//                        klee.delete(splitted);
-//                        break;
+                    case "delete":
+                        klee.delete(splitted);
+                        break;
                     case "echo":
                         klee.echo(userInput);
                     default:
