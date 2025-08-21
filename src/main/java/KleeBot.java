@@ -1,4 +1,3 @@
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -41,6 +40,18 @@ public class KleeBot {
 
     public ArrayList<Task> list = new ArrayList<>();
 
+    enum ErrorMessage {
+        MISSING_DETAILS("Hey! Gimmie more details about this task!"),
+        MISSING_BY("Include a timing you'll finish your task by! Using /by ..."),
+        MISSING_BY_2("NonoNonoNO! Tell me WHEN you're gonna finish the task by!! Share with me the DATE!!"),
+        MISSING_FROM("Include a timing the task starts from! Using /from ..."),
+        MISSING_TO("Include a timing when the task ends! Using /to ...");
+
+        private final String message;
+        ErrorMessage(String message) { this.message = message; }
+        public String getMessage() { return message; }
+    }
+
     void echo(String input) {
         System.out.println(lineBreak);
         System.out.println("\"" + input + "\"" + ", hehee!");
@@ -65,20 +76,20 @@ public class KleeBot {
     // different tasks handlers
 
     void handleTodo(String[] input) throws KleeExceptions{
-        if (input.length <= 1) throw new KleeExceptions("Hey! Gimmie more details about this task!");
+        if (input.length <= 1) throw new KleeExceptions(ErrorMessage.MISSING_DETAILS.getMessage());
         String taskDescription = Arrays.stream(input, 1, input.length)
                                        .reduce("", (a, b) -> a + " " + b);
         addToList(new ToDo(taskDescription));
     }
 
     void handleDeadline(String[] input) throws KleeExceptions {
-        if (input.length <= 1) throw new KleeExceptions("Hey! Gimmie more details about this task!");
+        if (input.length <= 1) throw new KleeExceptions(ErrorMessage.MISSING_DETAILS.getMessage());
         int byIndex = IntStream.range(0, input.length)
                                         .filter(i -> input[i].equals("/by"))
                                         .findFirst()
                                         .orElse(-1);
-        if (byIndex == -1) throw new KleeExceptions("Include a timing you'll finish your task by! Using /by ...");
-        if (byIndex == input.length - 1) throw new KleeExceptions("NonoNonoNO! Tell me WHEN you're gonna finish the task by!! Share with me the DATE!!");
+        if (byIndex == -1) throw new KleeExceptions(ErrorMessage.MISSING_BY.getMessage());
+        if (byIndex == input.length - 1) throw new KleeExceptions(ErrorMessage.MISSING_BY_2.getMessage());
         String taskDescription = Arrays.stream(input, 1, byIndex)
                 .reduce("", (a, b) -> a + " " + b);
         String by = Arrays.stream(input, byIndex + 1, input.length)
@@ -87,13 +98,13 @@ public class KleeBot {
     }
 
     void handleEvent(String[] input) throws KleeExceptions{
-        if (input.length <= 1) throw new KleeExceptions("Hey! Gimmie more details about this task!");
+        if (input.length <= 1) throw new KleeExceptions(ErrorMessage.MISSING_DETAILS.getMessage());
         int fromIndex = IntStream.range(0, input.length)
                 .filter(i -> input[i].equals("/from"))
                 .findFirst()
                 .orElse(-1);
 
-        if (fromIndex == -1) throw new KleeExceptions("Include a timing the task starts from! Using /from ...");
+        if (fromIndex == -1) throw new KleeExceptions(ErrorMessage.MISSING_FROM.getMessage());
         // test is separated from others bc the toIndex stream uses fromIndex
 
         int toIndex = IntStream.range(fromIndex, input.length)
@@ -101,7 +112,7 @@ public class KleeBot {
                 .findFirst()
                 .orElse(-1);
 
-        if (toIndex == -1) throw new KleeExceptions("Include a timing when the task ends! Using /to ...");
+        if (toIndex == -1) throw new KleeExceptions(ErrorMessage.MISSING_TO.getMessage());
         if (fromIndex == toIndex - 1) throw new KleeExceptions("Gimmie more info on when it starts!!");
         if (toIndex == input.length - 1) throw new KleeExceptions("Gimmie more info on when it ends!!");
 
