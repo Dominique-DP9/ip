@@ -1,6 +1,10 @@
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.stream.IntStream;
 
 public class KleeBot {
@@ -33,6 +37,65 @@ public class KleeBot {
         System.out.println(lineBreak);
         System.out.println("Aww mann, you're leaving already?? (╥﹏╥) ...Well!! Come back soon to play with me again alright!!");
         System.out.println(lineBreak);
+
+        saveTasksToLocal();
+    }
+
+
+//    String home = System.getProperty("user.home");
+
+    void loadTasks() throws FileNotFoundException {
+        File dir = new File("./KleeData");
+        File taskFile = new File("./KleeData/taskFile");
+
+        if (dir.exists()) {
+//            System.out.println("dir exists at " + dir);
+            if (taskFile.exists()) {
+                try {
+                    Scanner reader = new Scanner(taskFile);
+                    while (reader.hasNextLine()) {
+                        String data = reader.nextLine();
+                        if (data.isEmpty()) break;
+                        String[] splitted = data.split("\\s+\\|\\s+"); // regex splits by " | " hopefully
+                        String type = splitted[0];
+                        boolean done = splitted[1].equals("1");
+
+                        switch (type) {
+                            case "T":
+                                ToDo tmp = new ToDo(splitted[2]);
+                                if (done) { tmp.markAsDone(); }
+                                list.add(tmp);
+                                break;
+                            case "D":
+                                Deadline tmpD = new Deadline(splitted[2], splitted[3]);
+                                if (done) { tmpD.markAsDone(); }
+                                list.add(tmpD);
+                                break;
+                            case "E":
+                                Event tmpE = new Event(splitted[2], splitted[3], splitted[4]);
+                                if (done) { tmpE.markAsDone(); }
+                                list.add(tmpE);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            } else { // file doesnt exist yet
+                try {
+                    boolean _s = taskFile.createNewFile();
+                    System.out.println("File created" + taskFile.getName());
+                } catch (IOException e) {
+                    System.out.println("Something went wrong with creating a new file!! >_< I'm so sowwy :((");
+                    e.printStackTrace();
+                }
+            }
+        } else { // /data folder doesn't exist yet
+            boolean _success = dir.mkdirs();
+            System.out.println("Directory created at" + dir);
+        }
     }
 
 
@@ -63,6 +126,27 @@ public class KleeBot {
         System.out.println("Huh?? I'm not sure I quite understand o(╥﹏╥)o... could you be more specific please?");
         System.out.println(lineBreak);
     }
+
+    void saveTasksToLocal() {
+        try {
+            FileWriter writer = new FileWriter("./KleeData/taskFile", false); // 2nd param decides whether to overwrite the file or not
+            for (Task task : list) {
+//                System.out.println("Writing data to local!");
+                String fileString = task.getType() + " | " + (task.getStatus() ? "1" : "0") +  " | " + task.getDescription().trim();
+                if (task instanceof Deadline d) {
+                    fileString += " | " + d.getBy();
+                } else if (task instanceof Event e) {
+                    fileString += " | " + e.getFrom() + " | " + e.getTo();
+                }
+                System.out.println(fileString);
+                writer.write(fileString + "\n");
+            }
+            writer.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     void addToList(Task task) {
         System.out.println(lineBreak);
@@ -174,6 +258,15 @@ public class KleeBot {
 
         // Program Entry
         klee.greet();
+
+        // Load tasks from local
+
+        try {
+            klee.loadTasks();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
 
         loop: while (true) { // need to label the loop a name to break out of it w switch-case
             String userInput = textScanner.nextLine();
