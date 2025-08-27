@@ -11,6 +11,8 @@ public abstract class Task {
         return isDone ? "X" : " ";
     }
 
+    public boolean getStatus() { return isDone? true : false; }
+
     public String getDescription() {
         return this.description;
     }
@@ -58,11 +60,15 @@ class Deadline extends Task {
 
     public Deadline(String description, String by) {
         super(description);
-        this.by = by;
+        this.by = by.trim();
     }
 
     public String getType() {
         return "D";
+    }
+
+    public String getBy() {
+        return this.by;
     }
 
     @Override
@@ -77,12 +83,19 @@ class Event extends Task {
 
     public Event(String description, String from, String to) {
         super(description);
-        this.from = from;
-        this.to= to;
+        this.from = from.trim();
+        this.to= to.trim();
     }
 
     public String getType() {
         return "E";
+    }
+
+    public String getFrom() {
+        return from;
+    }
+    public String getTo() {
+        return to;
     }
 
     @Override
