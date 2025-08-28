@@ -7,6 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.stream.IntStream;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+
 public class KleeBot {
 
     public String lineBreak = "____________________________________________________________";
@@ -98,6 +103,25 @@ public class KleeBot {
         }
     }
 
+    String parseDateStr(String str) {
+//        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+//                .appendOptional(DateTimeFormatter.ofPattern("dd/MM/yyyy")) // bc dd/mm/yy supremacy
+//                .appendOptional(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+//                .appendOptional(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+//                .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+//                .toFormatter();
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .append(DateTimeFormatter.ofPattern("[MM/dd/yyyy]" + "[yyyy/MM/dd]" + "[dd-MM-yyyy]" + "[yyyy-MM-dd]"))
+                .toFormatter();
+        LocalDate date;
+        try {
+            date = LocalDate.parse(str, formatter);
+        } catch (DateTimeParseException e) {
+            return str;
+        }
+        return date.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+    }
+
 
     // Impt stuff
 
@@ -175,10 +199,14 @@ public class KleeBot {
         if (byIndex == -1) throw new KleeExceptions(ErrorMessage.MISSING_BY.getMessage());
         if (byIndex == input.length - 1) throw new KleeExceptions(ErrorMessage.MISSING_BY_2.getMessage());
         String taskDescription = Arrays.stream(input, 1, byIndex)
-                .reduce("", (a, b) -> a + " " + b);
+                .reduce("", (a, b) -> a + " " + b)
+                .trim();
         String by = Arrays.stream(input, byIndex + 1, input.length)
-                .reduce("", (a, b) -> a + " " + b);
-        addToList(new Deadline(taskDescription, by));
+                .reduce("", (a, b) -> a + " " + b)
+                .trim();
+        String dated_by = parseDateStr(by); // returns the string format in MMM dd yyyy if the input is a valid date
+
+        addToList(new Deadline(taskDescription, dated_by));
     }
 
     void handleEvent(String[] input) throws KleeExceptions{
@@ -201,12 +229,17 @@ public class KleeBot {
         if (toIndex == input.length - 1) throw new KleeExceptions("Gimmie more info on when it ends!!");
 
         String taskDescription = Arrays.stream(input, 1, fromIndex)
-                .reduce("", (a, b) -> a + " " + b);
+                .reduce("", (a, b) -> a + " " + b)
+                .trim();
         String from = Arrays.stream(input, fromIndex + 1, toIndex)
-                .reduce("", (a, b) -> a + " " + b);
+                .reduce("", (a, b) -> a + " " + b)
+                .trim();
         String to = Arrays.stream(input, toIndex + 1, input.length)
-                .reduce("", (a, b) -> a + " " + b);
-        addToList(new Event(taskDescription, from, to));
+                .reduce("", (a, b) -> a + " " + b)
+                .trim();
+        String dated_from = parseDateStr(from);
+        String dated_to = parseDateStr(to);
+        addToList(new Event(taskDescription, dated_from, dated_to));
     }
 
 
@@ -274,34 +307,34 @@ public class KleeBot {
 //            for (String word : splitted) System.out.println(word);
             try {
                 switch (splitted[0]) {
-                    case "bye":
-                        break loop;
-                    case "todo":
-                        klee.handleTodo(splitted);
-                        break;
-                    case "deadline":
-                        klee.handleDeadline(splitted);
-                        break;
-                    case "event":
-                        klee.handleEvent(splitted);
-                        break;
-                    case "list":
-                        klee.readList();
-                        break;
-                    case "mark":
-                        klee.markItem(splitted);
-                        break;
-                    case "unmark":
-                        klee.unmarkItem(splitted);
-                        break;
-                    case "delete":
-                        klee.delete(splitted);
-                        break;
-                    case "echo":
-                        klee.echo(userInput);
-                    default:
-                        klee.throwTantrum();
-                        //                    klee.addToList(userInput);
+                case "bye":
+                    break loop;
+                case "todo":
+                    klee.handleTodo(splitted);
+                    break;
+                case "deadline":
+                    klee.handleDeadline(splitted);
+                    break;
+                case "event":
+                    klee.handleEvent(splitted);
+                    break;
+                case "list":
+                    klee.readList();
+                    break;
+                case "mark":
+                    klee.markItem(splitted);
+                    break;
+                case "unmark":
+                    klee.unmarkItem(splitted);
+                    break;
+                case "delete":
+                    klee.delete(splitted);
+                    break;
+                case "echo":
+                    klee.echo(userInput);
+                default:
+                    klee.throwTantrum();
+                    // klee.addToList(userInput);
                 }
             } catch (KleeExceptions e) {
                 System.out.println(e.getMessage());
