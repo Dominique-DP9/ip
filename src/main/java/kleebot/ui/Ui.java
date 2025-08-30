@@ -21,6 +21,9 @@ public class Ui {
                     "⠀⠀⠀⠀⠈⢛⣿⣿⣿⡇⠀⠀⠀⠉⢻⣶⡟⠹⣷⣎⠉⠉⠉⠉⢻⠄⠀⠀⠀";
 
 
+    /**
+     * Contains all error messages to be thrown as part of {@link KleeExceptions}.
+     */
     public enum ErrorMessage {
         MISSING_DETAILS("Hey! Gimmie more details about this task!"),
         MISSING_BY("Include a timing you'll finish your task by! Using /by ..."),
@@ -34,14 +37,24 @@ public class Ui {
         public String getMessage() { return message; }
     }
 
+    /**
+     * Adds a simple line break.
+     */
     public void showLine() {
         System.out.println(LINE_BREAK);
     }
 
+    /**
+     * Shows a message to the whole world.
+     * @param msg The message to be shown.
+     */
     public void showMessage(String msg) {
         System.out.println(msg);
     }
 
+    /**
+     * The first thing that the user sees!
+     */
     public void greet() {
         showLine();
         System.out.println(KLEE_LOGO);
@@ -49,14 +62,24 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Klee says bye to you!
+     */
     public void exit() {
         System.out.println("Aww mann, you're leaving already?? (╥﹏╥) ...Well!! Come back soon to play with me again alright!!");
     }
 
+    /**
+     * Klee likes to mimic you!
+     * @param input The string to be parroted back to you.
+     */
     public void echo(String input) {
         System.out.println("\"" + input + "\"" + ", hehee!");
     }
 
+    /**
+     * Throws a tantrum.
+     */
     public void throwTantrum() {
         System.out.println("Huh?? I'm not sure I quite understand o(╥﹏╥)o... could you be more specific please?");
     }
