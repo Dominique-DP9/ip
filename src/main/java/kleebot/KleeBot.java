@@ -1,4 +1,11 @@
+package kleebot;
 
+import kleebot.command.Command;
+import kleebot.storage.Storage;
+import kleebot.task.TaskList;
+import kleebot.ui.KleeExceptions;
+import kleebot.ui.Parser;
+import kleebot.ui.Ui;
 
 import java.util.Scanner;
 
