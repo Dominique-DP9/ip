@@ -81,7 +81,7 @@ public class Storage {
                 } else if (task instanceof Event e) {
                     fileString += " | " + e.getFrom() + " | " + e.getTo();
                 }
-                System.out.println(fileString);
+//                System.out.println(fileString); // debug
                 writer.write(fileString + "\n");
             }
             writer.close();

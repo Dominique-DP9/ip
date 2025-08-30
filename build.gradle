@@ -9,6 +9,17 @@ repositories {
     mavenCentral()
 }
 
+compileJava.options.encoding = 'UTF-8'
+
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(JavaExec) {
+    jvmArgs = ['-Dfile.encoding=UTF-8']
+}
+
 dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
@@ -16,6 +27,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    systemProperty "file.encoding", "utf-8"
 
     testLogging {
         events "passed", "skipped", "failed"
@@ -33,7 +45,7 @@ application {
 }
 
 shadowJar {
-    archiveBaseName = "duke"
+    archiveBaseName = "KleeBot"
     archiveClassifier = null
 }
 

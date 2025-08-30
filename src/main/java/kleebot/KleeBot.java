@@ -47,7 +47,8 @@ public class KleeBot {
                 ui.showLine();
             }
         }
-        ui.exit();
+//        ui.exit();
+        // Saves files to local after program ends
         storage.saveTasksToLocal(tasks.getTasks());
 
     }
