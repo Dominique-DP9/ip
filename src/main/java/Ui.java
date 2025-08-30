@@ -47,21 +47,15 @@ public class Ui {
     }
 
     void exit() {
-        showLine();
         System.out.println("Aww mann, you're leaving already?? (╥﹏╥) ...Well!! Come back soon to play with me again alright!!");
-        showLine();
     }
 
     void echo(String input) {
-        showLine();
         System.out.println("\"" + input + "\"" + ", hehee!");
-        showLine();
     }
 
     void throwTantrum() {
-        showLine();
         System.out.println("Huh?? I'm not sure I quite understand o(╥﹏╥)o... could you be more specific please?");
-        showLine();
     }
 
 

@@ -15,13 +15,20 @@ public class TaskList {
         this.tasks = tasks;
     }
 
+    public int getSize() {
+        return tasks.size();
+    }
+
+    public Task getTask(int i) {
+        return tasks.get(i);
+    }
+
+
     public void addToList(Task task) {
-        System.out.println(Ui.LINE_BREAK);
         tasks.add(task);
         System.out.println("OK! Adding this to your list!: ");
         System.out.println("\t" + task.toString());
         System.out.println("Now you have " + tasks.size() + " tasks in the list!!! Felicitations!!");
-        System.out.println(Ui.LINE_BREAK);
     }
 
     public void delete(String[] input) {
@@ -30,26 +37,19 @@ public class TaskList {
         System.out.println("\t" + task.toString());
     }
 
-    public int getSize() {
-        return tasks.size();
-    }
 
     public ArrayList<Task> getTasks() {
         return tasks;
     }
 
     public void markItem(String[] input) {
-        System.out.println("You're amazing, friend!! I've marked this task as DHONE!!:");
         Task task = tasks.get(Integer.parseInt(input[1]) - 1);
         task.markAsDone();
-        System.out.println("\t" + task.toString());
     }
 
     public void unmarkItem(String[] input) {
-        System.out.println("AWW, it's alright! You can work on this the next time!:");
         Task task = tasks.get(Integer.parseInt(input[1]) - 1);
         task.unmarkAsDone();
-        System.out.println("\t" + task.toString());
     }
 
     public void readList() {
@@ -79,7 +79,7 @@ public class TaskList {
         String by = Arrays.stream(input, byIndex + 1, input.length)
                 .reduce("", (a, b) -> a + " " + b)
                 .trim();
-        String dated_by = parseDateStr(by); // returns the string format in MMM dd yyyy if the input is a valid date
+        String dated_by = Parser.parseDateStr(by); // returns the string format in MMM dd yyyy if the input is a valid date
 
         addToList(new Deadline(taskDescription, dated_by));
     }
@@ -112,28 +112,11 @@ public class TaskList {
         String to = Arrays.stream(input, toIndex + 1, input.length)
                 .reduce("", (a, b) -> a + " " + b)
                 .trim();
-        String dated_from = parseDateStr(from);
-        String dated_to = parseDateStr(to);
+        String dated_from = Parser.parseDateStr(from);
+        String dated_to = Parser.parseDateStr(to);
         addToList(new Event(taskDescription, dated_from, dated_to));
     }
 
 
-    public String parseDateStr(String str) {
-//        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-//                .appendOptional(DateTimeFormatter.ofPattern("dd/MM/yyyy")) // bc dd/mm/yy supremacy
-//                .appendOptional(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
-//                .appendOptional(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-//                .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-//                .toFormatter();
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                .append(DateTimeFormatter.ofPattern("[MM/dd/yyyy]" + "[yyyy/MM/dd]" + "[dd-MM-yyyy]" + "[yyyy-MM-dd]"))
-                .toFormatter();
-        LocalDate date;
-        try {
-            date = LocalDate.parse(str, formatter);
-        } catch (DateTimeParseException e) {
-            return str;
-        }
-        return date.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
-    }
+
 }
