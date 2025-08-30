@@ -28,7 +28,7 @@ public class TaskListTest {
         Task todo = new ToDo("Do laundry");
         taskList.addToList(todo);
 
-        String[] input = {"delete", "1"};
+        int input = 1;
         taskList.delete(input);
         assertEquals(0, taskList.getSize());
     }
