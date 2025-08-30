@@ -1,3 +1,10 @@
+package kleebot.storage;
+
+import kleebot.task.Deadline;
+import kleebot.task.Event;
+import kleebot.task.Task;
+import kleebot.task.ToDo;
+
 import java.io.*;
 import java.util.*;
 
@@ -63,7 +70,7 @@ public class Storage {
         return tasks;
     }
 
-    void saveTasksToLocal(ArrayList<Task> tasks) {
+    public void saveTasksToLocal(ArrayList<Task> tasks) {
         try {
             FileWriter writer = new FileWriter(filePath, false); // 2nd param decides whether to overwrite the file or not
             for (Task task : tasks) {
