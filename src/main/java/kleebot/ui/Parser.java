@@ -77,18 +77,20 @@ public class Parser {
             case "unmark":
                 return new UnmarkCommand(parts);
             case "delete":
-                if (parts.length == 1) throw  new KleeExceptions(Ui.ErrorMessage.MISSING_DELETE.getMessage());
-                return new DeleteCommand(parts[1]);
+                return new DeleteCommand(parts);
+            case "find":
+                if (parts.length == 1) throw new KleeExceptions(Ui.ErrorMessage.MISSING_SEARCH_TERM.getMessage());
+                return new FindCommand(parts[1]);
             case "echo":
                 return new EchoCommand(fullCommand);
             default:
-                break;
+                return new UnknownCommand();
 
             }
         } catch (KleeExceptions e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
-        return new UnknownCommand();
+        return new EmptyCommand();
     }
 
 

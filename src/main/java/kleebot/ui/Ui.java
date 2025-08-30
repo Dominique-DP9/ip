@@ -30,6 +30,7 @@ public class Ui {
         MISSING_BY_2("NonoNonoNO! Tell me WHEN you're gonna finish the task by!! Share with me the DATE!!"),
         MISSING_FROM("Include a timing the task starts from! Using /from ..."),
         MISSING_TO("Include a timing when the task ends! Using /to ..."),
+        MISSING_SEARCH_TERM("Hey! Tell me what task you're searching for!"),
         MISSING_DELETE("What task would you like to delete!");
 
         private final String message;
