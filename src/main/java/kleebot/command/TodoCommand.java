@@ -12,6 +12,10 @@ public class TodoCommand extends Command {
         this.description = description;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         ToDo todo = new ToDo(description);

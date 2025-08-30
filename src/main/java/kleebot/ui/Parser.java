@@ -10,7 +10,8 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class Parser {
-    public static Command parse(String fullCommand) {
+
+    public static Command parse(String fullCommand) throws KleeExceptions {
         String[] parts = fullCommand.split("\\s+");
         String taskDescription;
         try {
@@ -92,12 +93,6 @@ public class Parser {
 
 
     public static String parseDateStr(String str) {
-//        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-//                .appendOptional(DateTimeFormatter.ofPattern("dd/MM/yyyy")) // bc dd/mm/yy supremacy
-//                .appendOptional(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
-//                .appendOptional(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-//                .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-//                .toFormatter();
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                 .append(DateTimeFormatter.ofPattern("[MM/dd/yyyy]" + "[yyyy/MM/dd]" + "[dd-MM-yyyy]" + "[yyyy-MM-dd]"))
                 .toFormatter();
