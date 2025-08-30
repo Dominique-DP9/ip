@@ -19,4 +19,12 @@ public class DeadlineCommand extends Command {
         Deadline deadline = new Deadline(description, by);
         tasks.addToList(deadline);
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getBy() {
+        return by;
+    }
 }

@@ -52,7 +52,7 @@ public class TaskList {
     public void readList() {
         for (int i=0; i<tasks.size(); i++) {
             Task task = tasks.get(i);
-            System.out.println(i+1 + "." + task.toString());
+            System.out.println(i+1 + ". " + task.toString());
         };
     }
 

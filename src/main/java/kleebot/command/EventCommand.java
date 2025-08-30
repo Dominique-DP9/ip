@@ -21,4 +21,16 @@ public class EventCommand extends Command {
         Event event = new Event(description, from, to);
         tasks.addToList(event);
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public String getTo() {
+        return to;
+    }
 }
