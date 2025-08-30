@@ -77,7 +77,8 @@ public class Parser {
             case "unmark":
                 return new UnmarkCommand(parts);
             case "delete":
-                return new DeleteCommand(parts);
+                if (parts.length == 1) throw  new KleeExceptions(Ui.ErrorMessage.MISSING_DELETE.getMessage());
+                return new DeleteCommand(parts[1]);
             case "echo":
                 return new EchoCommand(fullCommand);
             default:

@@ -1,7 +1,9 @@
 package kleebot.task;
 
 import java.util.*;
-
+/**
+  * Represents a high-level interface for manipulating the tasks contained in a tasklist variable.
+ */
 public class TaskList {
     private ArrayList<Task> tasks;
     public TaskList() {
@@ -21,6 +23,11 @@ public class TaskList {
     }
 
 
+    /**
+     * Adds a task to the class' tasklist.
+     *
+     * @param task The task to be added to the list.
+     */
     public void addToList(Task task) {
         tasks.add(task);
         System.out.println("OK! Adding this to your list!: ");
@@ -28,8 +35,8 @@ public class TaskList {
         System.out.println("Now you have " + tasks.size() + " tasks in the list!!! Felicitations!!");
     }
 
-    public void delete(String[] input) {
-        Task task = tasks.get(Integer.parseInt(input[1]) - 1);
+    public void delete(int index) {
+        Task task = tasks.get(index - 1);
         tasks.remove(task);
         System.out.println("\t" + task.toString());
     }
