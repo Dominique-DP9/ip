@@ -3,6 +3,7 @@ package kleebot.command;
 import kleebot.storage.Storage;
 import kleebot.task.Deadline;
 import kleebot.task.TaskList;
+import kleebot.ui.KleeExceptions;
 import kleebot.ui.Ui;
 
 /**
@@ -36,6 +37,14 @@ public class DeadlineCommand extends Command {
         Deadline deadline = new Deadline(description, by);
         tasks.addToList(deadline);
     }
+
+    @Override
+    public String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions {
+        Deadline deadline = new Deadline(description, by);
+        tasks.addToList(deadline);
+        return ui.formatAddTask(deadline, tasks.getSize());
+    }
+
 
     public String getDescription() {
         return description;

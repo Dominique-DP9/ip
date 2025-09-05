@@ -2,6 +2,7 @@ package kleebot.command;
 
 import kleebot.storage.Storage;
 import kleebot.task.TaskList;
+import kleebot.ui.KleeExceptions;
 import kleebot.ui.Ui;
 
 
@@ -32,5 +33,11 @@ public class MarkCommand extends Command {
         tasks.markItem(input);
         ui.showMessage("You're amazing, friend!! I've marked this task as DHONE!!:");
         ui.showMessage("\t" + tasks.getTask(Integer.parseInt(input[1]) - 1).toString());
+    }
+
+    @Override
+    public String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions {
+        tasks.markItem(input);
+        return ui.formatMarkTask(tasks.getTask(Integer.parseInt(input[1]) - 1));
     }
 }
