@@ -1,7 +1,9 @@
 package kleebot.command;
 
 import kleebot.storage.Storage;
+import kleebot.task.Task;
 import kleebot.task.TaskList;
+import kleebot.ui.KleeExceptions;
 import kleebot.ui.Ui;
 
 /**
@@ -34,5 +36,12 @@ public class DeleteCommand extends Command {
         tasks.delete(index);
         ui.showMessage("Now you have " + tasks.getTasks().size() + " tasks left in the list!!! ");
 
+    }
+
+    @Override
+    public String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions {
+        Task toBeDeleted = tasks.getTask(index);
+        tasks.delete(index);
+        return ui.formatDeleteTask(toBeDeleted, tasks.getSize());
     }
 }

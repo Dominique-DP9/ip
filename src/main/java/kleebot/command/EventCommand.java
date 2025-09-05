@@ -3,6 +3,7 @@ package kleebot.command;
 import kleebot.storage.Storage;
 import kleebot.task.Event;
 import kleebot.task.TaskList;
+import kleebot.ui.KleeExceptions;
 import kleebot.ui.Ui;
 
 /**
@@ -38,6 +39,13 @@ public class EventCommand extends Command {
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         Event event = new Event(description, from, to);
         tasks.addToList(event);
+    }
+
+    @Override
+    public String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions {
+        Event event = new Event(description, from, to);
+        tasks.addToList(event);
+        return ui.formatAddTask(event, tasks.getSize());
     }
 
     public String getDescription() {

@@ -53,6 +53,21 @@ public class KleeBot {
 
     }
 
+    /**
+     * Used for the GUI chatbot.
+     *
+     * @param response The user input to be parsed by KleeBot.
+     */
+    public String getResponse(String response) {
+        try {
+            Command c = Parser.parse(response);
+            String kleeText = c.executeGUI(tasks, ui, storage);
+            return kleeText;
+        } catch (KleeExceptions e) {
+            return e.getMessage();
+        }
+    }
+
 
 
     public static void main(String[] args) {

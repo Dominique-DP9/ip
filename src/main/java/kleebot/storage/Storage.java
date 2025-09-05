@@ -32,23 +32,23 @@ public class Storage {
                     boolean done = splitted[1].equals("1");
 
                     switch (type) {
-                        case "T":
-                            ToDo tmp = new ToDo(splitted[2]);
-                            if (done) { tmp.markAsDone(); }
-                            tasks.add(tmp);
-                            break;
-                        case "D":
-                            Deadline tmpD = new Deadline(splitted[2], splitted[3]);
-                            if (done) { tmpD.markAsDone(); }
-                            tasks.add(tmpD);
-                            break;
-                        case "E":
-                            Event tmpE = new Event(splitted[2], splitted[3], splitted[4]);
-                            if (done) { tmpE.markAsDone(); }
-                            tasks.add(tmpE);
-                            break;
-                        default:
-                            break;
+                    case "T":
+                        ToDo tmp = new ToDo(splitted[2]);
+                        if (done) { tmp.markAsDone(); }
+                        tasks.add(tmp);
+                        break;
+                    case "D":
+                        Deadline tmpD = new Deadline(splitted[2], splitted[3]);
+                        if (done) { tmpD.markAsDone(); }
+                        tasks.add(tmpD);
+                        break;
+                    case "E":
+                        Event tmpE = new Event(splitted[2], splitted[3], splitted[4]);
+                        if (done) { tmpE.markAsDone(); }
+                        tasks.add(tmpE);
+                        break;
+                    default:
+                        break;
                     }
                 }
             } catch (FileNotFoundException e) {

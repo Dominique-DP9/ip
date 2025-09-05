@@ -24,6 +24,16 @@ public abstract class Command {
     public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions;
 
     /**
+     * Executes the command with the given task list, UI, and storage specifically for the GUI app.
+     *
+     * @param tasks   The {@link TaskList} containing all tasks.
+     * @param ui      The {@link Ui} responsible for displaying messages.
+     * @param storage The {@link Storage} responsible for saving/loading tasks.
+     * @throws KleeExceptions If an error occurs while executing the command.
+     */
+    public abstract String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions;
+
+    /**
      * Returns whether this command should terminate the program.
      *
      * @return {@code true} if this command signals program exit, {@code false} otherwise.

@@ -6,6 +6,7 @@ import java.util.List;
 import kleebot.storage.Storage;
 import kleebot.task.Task;
 import kleebot.task.TaskList;
+import kleebot.ui.KleeExceptions;
 import kleebot.ui.Ui;
 
 public class FindCommand extends Command {
@@ -37,5 +38,20 @@ public class FindCommand extends Command {
         } else {
             ui.showMessage("AWWW man :( I couldn't find anything matching your request T_T");
         }
+    }
+
+    @Override
+    public String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions {
+        List<String> tmp2 = new ArrayList<>();
+
+        int i = 0;
+        for (Task task: tasks.getTasks()){
+            String desc = task.getDescription();
+            if (desc.contains(expression)) {
+                i++;
+                tmp2.add(i + ". " + task.toString());
+            }
+        }
+        return ui.formatFind(tmp2);
     }
 }

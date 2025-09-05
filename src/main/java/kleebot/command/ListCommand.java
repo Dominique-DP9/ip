@@ -2,6 +2,7 @@ package kleebot.command;
 
 import kleebot.storage.Storage;
 import kleebot.task.TaskList;
+import kleebot.ui.KleeExceptions;
 import kleebot.ui.Ui;
 
 
@@ -21,5 +22,10 @@ public class ListCommand extends Command {
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         ui.showMessage("Here are a list of things you've made!!");
         tasks.readList();
+    }
+
+    @Override
+    public String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions {
+        return ui.formatList(tasks);
     }
 }

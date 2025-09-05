@@ -1,5 +1,10 @@
 package kleebot.ui;
 
+import java.util.List;
+
+import kleebot.task.Task;
+import kleebot.task.TaskList;
+
 public class Ui {
 
     public static final String LINE_BREAK = "____________________________________________________________";
@@ -85,6 +90,67 @@ public class Ui {
         System.out.println("Huh?? I'm not sure I quite understand o(╥﹏╥)o... could you be more specific please?");
     }
 
+
+
+    // ========== GUI METHODS ==========
+    public String formatAddTask(Task task, int totalTasks) {
+        return "OK! Adding this to your list!:\n\t" + task
+                + "\nNow you have " + totalTasks + " tasks in the list!!! Felicitations!!";
+    }
+
+    // ========== Delete ==========
+    public String formatDeleteTask(Task task, int totalTasks) {
+        return "Okay!!! I've removed this item from your list:\n\t" + task
+                + "\nNow you have " + totalTasks + " tasks in the list!!!!! ";
+    }
+
+    public String formatEcho(String input) {
+        return "\"" + input + "\"" + ", hehee!";
+    }
+
+    public String formatExit() {
+        return "Aww mann, you're leaving already?? (╥﹏╥) ...Well!! Come back soon to play with me again alright!!";
+    }
+
+    public String formatTantrum() {
+        return "Huh?? I'm not sure I quite understand o(╥﹏╥)o... could you be more specific please?";
+    }
+
+    // ========== Mark / Unmark ==========
+    public String formatMarkTask(Task task) {
+        return "You're amazing, friend!! I've marked this task as DHONE!!:\n\t " + task;
+    }
+
+    public String formatUnmarkTask(Task task) {
+        return "AWW, it's alright! You can work on this the next time!:\n  " + task;
+    }
+
+    public String formatList(TaskList tasks) {
+        if (tasks.getSize() == 0) {
+            return "AWWW mannn :(( your task list is empty!";
+        }
+        StringBuilder sb = new StringBuilder("Here are a list of things you've made!!\n");
+        for (int i = 0; i < tasks.getSize(); i++) {
+            sb.append((i + 1)).append(". ").append(tasks.getTask(i)).append("\n");
+        }
+        return sb.toString();
+    }
+
+
+    // ========== Find ==========
+    public String formatFind(List<String> list) {
+        if (list.isEmpty()) {
+            return "AWWW man :( I couldn't find anything matching your request T_T";
+        }
+        StringBuilder sb = new StringBuilder("OKAY!! Klee worked really hard to find the matching tasks based on your request!! >_<\n");
+//        for (int i = 0; i < list.size(); i++) {
+//            sb.append((i + 1)).append(". ").append(matchingTasks.get(i)).append("\n");
+//        }
+        for (String s: list) {
+            sb.append(s).append("\n");
+        }
+        return sb.toString();
+    }
 
 
 
