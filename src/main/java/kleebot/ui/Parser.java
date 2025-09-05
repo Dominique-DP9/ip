@@ -2,13 +2,16 @@ package kleebot.ui;
 
 import kleebot.command.*;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
+/**
+ * Parser class 
+ */
 public class Parser {
 
     public static Command parse(String fullCommand) throws KleeExceptions {
