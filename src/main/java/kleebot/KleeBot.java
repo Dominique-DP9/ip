@@ -20,6 +20,7 @@ public class KleeBot {
     private Parser parser;
 
     public KleeBot(String filePath) {
+        assert filePath != null : "File path should not be null";
         ui = new Ui();
         storage = new Storage(filePath);
         try {
@@ -62,6 +63,7 @@ public class KleeBot {
         try {
             Command c = Parser.parse(response);
             String kleeText = c.executeGUI(tasks, ui, storage);
+            assert !kleeText.isEmpty();
             return kleeText;
         } catch (KleeExceptions e) {
             return e.getMessage();

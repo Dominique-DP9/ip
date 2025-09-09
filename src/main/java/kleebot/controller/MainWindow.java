@@ -51,6 +51,8 @@ public class MainWindow {
         String userText = userInput.getText();
         String kleeText = kleeBot.getResponse(userText);
 
+        assert !kleeText.isEmpty();
+
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(userText, userImage),
                 DialogBox.getKleeDialog(kleeText, kleeImage)
