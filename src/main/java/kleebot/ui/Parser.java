@@ -17,6 +17,7 @@ public class Parser {
     public static Command parse(String fullCommand) throws KleeExceptions {
         String[] parts = fullCommand.split("\\s+");
         String taskDescription;
+        assert parts.length > 0 : "Command parts should not be empty";
 
         switch (parts[0]) {
         case "bye":
@@ -97,6 +98,7 @@ public class Parser {
 
 
     public static String parseDateStr(String str) {
+        assert str != null : "Date string cannot be null";
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                 .append(DateTimeFormatter.ofPattern("[MM/dd/yyyy]" + "[yyyy/MM/dd]" + "[dd-MM-yyyy]" + "[yyyy-MM-dd]"))
                 .toFormatter();

@@ -53,6 +53,7 @@ public class Storage {
                         tasks.add(tmpE);
                         break;
                     default:
+                        assert false : "Unknown task type found in storage: " + type;
                         break;
                     }
                 }
@@ -61,7 +62,8 @@ public class Storage {
             }
         } else { // file doesnt exist yet
             try {
-                boolean _s = file.createNewFile();
+                boolean _success = file.createNewFile();
+                assert _success : "Failed to create new file at: " + filePath;
                 System.out.println("File created" + file.getName());
             } catch (IOException e) {
                 System.out.println("Something went wrong with creating a new file!! >_< I'm so sowwy :((");
