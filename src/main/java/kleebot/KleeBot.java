@@ -37,8 +37,9 @@ public class KleeBot {
         boolean isExit = false;
         loop: while (!isExit) {
             try {
-                String userInput = textScanner.nextLine();
                 ui.showLine();
+
+                String userInput = textScanner.nextLine();
                 Command c = Parser.parse(userInput);
                 c.execute(tasks, ui, storage);
                 isExit = c.isExit();

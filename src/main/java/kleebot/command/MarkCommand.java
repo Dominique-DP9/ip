@@ -31,8 +31,7 @@ public class MarkCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         tasks.markItem(input);
-        ui.showMessage("You're amazing, friend!! I've marked this task as DHONE!!:");
-        ui.showMessage("\t" + tasks.getTask(Integer.parseInt(input[1]) - 1).toString());
+        ui.updateMark(tasks.getTask(Integer.parseInt(input[1]) - 1));
     }
 
     @Override

@@ -36,6 +36,7 @@ public class DeadlineCommand extends Command {
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         Deadline deadline = new Deadline(description, by);
         tasks.addToList(deadline);
+        ui.updateList(deadline, tasks.getSize());
     }
 
     @Override

@@ -30,8 +30,7 @@ public class UnmarkCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         tasks.unmarkItem(input);
-        ui.showMessage("AWW, it's alright! You can work on this the next time!:");
-        ui.showMessage("\t" + tasks.getTask(Integer.parseInt(input[1]) - 1).toString());
+        ui.updateUnmark(tasks.getTask(Integer.parseInt(input[1]) - 1));
     }
 
     @Override

@@ -22,7 +22,6 @@ public class TaskList {
         return tasks.get(i);
     }
 
-
     /**
      * Adds a task to the class' tasklist.
      *
@@ -30,15 +29,11 @@ public class TaskList {
      */
     public void addToList(Task task) {
         tasks.add(task);
-        System.out.println("OK! Adding this to your list!: ");
-        System.out.println("\t" + task.toString());
-        System.out.println("Now you have " + tasks.size() + " tasks in the list!!! Felicitations!!");
     }
 
     public void delete(int index) {
         Task task = tasks.get(index - 1);
         tasks.remove(task);
-        System.out.println("\t" + task.toString());
     }
 
 
