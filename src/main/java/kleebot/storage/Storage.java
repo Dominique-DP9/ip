@@ -20,7 +20,6 @@ public class Storage {
         ArrayList<Task> tasks = new ArrayList<>();
 //        File dir = new File("./KleeData");
         File file = new File(filePath);
-        // if (dir.exists()) // not sure if this will still be needed?
         if (file.exists()) {
             try {
                 Scanner reader = new Scanner(file);
@@ -34,17 +33,23 @@ public class Storage {
                     switch (type) {
                     case "T":
                         ToDo tmp = new ToDo(splitted[2]);
-                        if (done) { tmp.markAsDone(); }
+                        if (done) {
+                            tmp.markAsDone();
+                        }
                         tasks.add(tmp);
                         break;
                     case "D":
                         Deadline tmpD = new Deadline(splitted[2], splitted[3]);
-                        if (done) { tmpD.markAsDone(); }
+                        if (done) {
+                            tmpD.markAsDone();
+                        }
                         tasks.add(tmpD);
                         break;
                     case "E":
                         Event tmpE = new Event(splitted[2], splitted[3], splitted[4]);
-                        if (done) { tmpE.markAsDone(); }
+                        if (done) {
+                            tmpE.markAsDone();
+                        }
                         tasks.add(tmpE);
                         break;
                     default:
@@ -74,14 +79,12 @@ public class Storage {
         try {
             FileWriter writer = new FileWriter(filePath, false); // 2nd param decides whether to overwrite the file or not
             for (Task task : tasks) {
-//                System.out.println("Writing data to local!");
                 String fileString = task.getType() + " | " + (task.getStatus() ? "1" : "0") +  " | " + task.getDescription().trim();
                 if (task instanceof Deadline d) {
                     fileString += " | " + d.getBy();
                 } else if (task instanceof Event e) {
                     fileString += " | " + e.getFrom() + " | " + e.getTo();
                 }
-//                System.out.println(fileString); // debug
                 writer.write(fileString + "\n");
             }
             writer.close();

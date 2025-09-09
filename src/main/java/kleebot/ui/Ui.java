@@ -83,6 +83,29 @@ public class Ui {
         System.out.println("\"" + input + "\"" + ", hehee!");
     }
 
+    public void updateList(Task task, int totalTasks) {
+        System.out.println("OK! Adding this to your list!: ");
+        System.out.println("\t" + task.toString());
+        System.out.println("Now you have " + totalTasks + " tasks in the list!!! Felicitations!!");
+    }
+
+    public void updateDelete(Task task, int totalTasks) {
+        showMessage("Okay!!! I've removed this item from your list:");
+        showMessage("\t" + task.toString());
+        showMessage("Now you have " + totalTasks + " tasks left in the list!!! ");
+    }
+
+    public void updateMark(Task task) {
+        showMessage("You're amazing, friend!! I've marked this task as DHONE!!:");
+        showMessage("\t" + task);
+    }
+
+    public void updateUnmark(Task task) {
+        showMessage("AWW, it's alright! You can work on this the next time!:");
+        showMessage("\t" + task);
+    }
+
+
     /**
      * Throws a tantrum.
      */
