@@ -87,6 +87,13 @@ public class Parser {
                 throw new KleeExceptions(Ui.ErrorMessage.MISSING_SEARCH_TERM.getMessage());
             }
             return new FindCommand(parts[1]);
+        case "setPriority":
+            if (parts.length == 1) {
+                throw new KleeExceptions(Ui.ErrorMessage.MISSING_DETAILS.getMessage());
+            } else if (parts.length == 2) {
+                throw new KleeExceptions(Ui.ErrorMessage.MISSING_PRIORITY.getMessage());
+            }
+            return new SetpriorityCommand(Integer.parseInt(parts[1]) - 1, Integer.parseInt(parts[2]));
         case "echo":
             return new EchoCommand(fullCommand);
         default:

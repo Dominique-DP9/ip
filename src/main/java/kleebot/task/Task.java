@@ -3,6 +3,7 @@ package kleebot.task;
 public abstract class Task {
     protected String description;
     protected boolean isDone;
+    protected int priority = 0;
 
     public Task(String description) {
         this.description = description;
@@ -20,6 +21,14 @@ public abstract class Task {
     }
     
     public abstract String getType();
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int val) {
+        this.priority = val;
+    }
 
     public void markAsDone() {
         this.isDone = true;

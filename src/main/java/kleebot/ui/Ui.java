@@ -36,7 +36,8 @@ public class Ui {
         MISSING_FROM("Include a timing the task starts from! Using /from ..."),
         MISSING_TO("Include a timing when the task ends! Using /to ..."),
         MISSING_SEARCH_TERM("Hey! Tell me what task you're searching for!"),
-        MISSING_DELETE("What task would you like to delete!");
+        MISSING_DELETE("What task would you like to delete!"),
+        MISSING_PRIORITY("Hey! What priority should I assign this task?");
 
         private final String message;
         ErrorMessage(String message) { this.message = message; }
@@ -105,6 +106,11 @@ public class Ui {
         showMessage("\t" + task);
     }
 
+    public void updatePriority(Task task, int priority) {
+        showMessage("OKAY!! I've reordered your priorities!!");
+        showMessage("\t" + task + " now has a priority of:" + priority + "!!!!!");
+    }
+
 
     /**
      * Throws a tantrum.
@@ -146,6 +152,10 @@ public class Ui {
 
     public String formatUnmarkTask(Task task) {
         return "AWW, it's alright! You can work on this the next time!:\n  " + task;
+    }
+
+    public String formatPriority(Task task, int value) {
+        return "OKAY!! I've reordered your priorities!!\n\t" + task + " now has a priority of:" + value + "!!!!!";
     }
 
     public String formatList(TaskList tasks) {
