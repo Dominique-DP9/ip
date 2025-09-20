@@ -14,7 +14,37 @@ public class Storage {
 
     public Storage(String filePath) {
         this.filePath = filePath;
+        initializeStorage();
     }
+
+    private void initializeStorage() {
+        File file = new File(filePath);
+
+        // Check if the file's directory exists, if not, create it
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            boolean dirCreated = parentDir.mkdirs(); // Create any necessary directories
+            if (!dirCreated) {
+                System.out.println("hmm... i failed to create create the directory? for path: " + parentDir);
+            }
+        }
+
+        // If the file doesn't exist, attempt to create it
+        if (!file.exists()) {
+            try {
+                boolean fileCreated = file.createNewFile();
+                if (fileCreated) {
+                    System.out.println("File created at: " + filePath);
+                } else {
+                    System.out.println("File already exists at: " + filePath);
+                }
+            } catch (IOException e) {
+                System.out.println("Something went wrong with creating a new file!! >_< I'm so sowwy :((" + filePath);
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     /**
      * Returns a list of tasks from a local data file.
