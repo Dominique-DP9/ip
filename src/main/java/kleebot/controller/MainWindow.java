@@ -2,6 +2,7 @@ package kleebot.controller;
 
 import java.util.Objects;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -47,7 +48,7 @@ public class MainWindow {
      * the dialog container. Clears the user input after processing.
      */
     @FXML
-    private void handleUserInput() {
+    private void handleUserInput() throws InterruptedException {
         String userText = userInput.getText();
         String kleeText = kleeBot.getResponse(userText);
 
@@ -58,6 +59,21 @@ public class MainWindow {
                 DialogBox.getKleeDialog(kleeText, kleeImage)
         );
         userInput.clear();
+
+        if (userText.equals("bye")) { // Exits the controller
+
+            // Runs the shutdown sequence asynchronously
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                // After delay, exit the application
+                Platform.runLater(Platform::exit);
+            }).start();
+
+        }
     }
 
 

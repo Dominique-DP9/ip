@@ -37,6 +37,7 @@ public class MarkCommand extends Command {
     @Override
     public String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions {
         tasks.markItem(input);
+        storage.saveTasksToLocal(tasks.getTasks());
         return ui.formatMarkTask(tasks.getTask(Integer.parseInt(input[1]) - 1));
     }
 }

@@ -27,15 +27,6 @@ public class Main extends Application {
 
     private KleeBot kleeBot = new KleeBot(DEFAULT_FILE_PATH);
 
-
-//    public Main(String filePath) {
-//
-//    }
-//
-//    public Main() {
-//        this(DEFAULT_FILE_PATH);
-//    }
-
     @Override
     public void start(Stage stage) {
         try {

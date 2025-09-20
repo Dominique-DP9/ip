@@ -46,6 +46,7 @@ public class EventCommand extends Command {
     public String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions {
         Event event = new Event(description, from, to);
         tasks.addToList(event);
+        storage.saveTasksToLocal(tasks.getTasks());
         return ui.formatAddTask(event, tasks.getSize());
     }
 

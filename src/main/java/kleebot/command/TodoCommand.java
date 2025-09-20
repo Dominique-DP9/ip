@@ -43,6 +43,7 @@ public class TodoCommand extends Command {
     public String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions {
         ToDo todo = new ToDo(description);
         tasks.addToList(todo);
+        storage.saveTasksToLocal(tasks.getTasks());
         return ui.formatAddTask(todo, tasks.getSize());
     }
 }

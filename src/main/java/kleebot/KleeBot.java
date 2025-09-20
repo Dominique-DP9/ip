@@ -11,7 +11,9 @@ import java.util.Scanner;
 
 import java.io.FileNotFoundException;
 
-
+/**
+ * Represents a chatbot called KleeBot for all your task management needs.
+ */
 public class KleeBot {
 
     private Ui ui;
@@ -56,7 +58,7 @@ public class KleeBot {
     }
 
     /**
-     * Used for the GUI chatbot.
+     * Returns a string literal for the GUI chatbot.
      *
      * @param response The user input to be parsed by KleeBot.
      */

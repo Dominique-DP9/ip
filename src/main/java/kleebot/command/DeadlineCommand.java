@@ -43,6 +43,7 @@ public class DeadlineCommand extends Command {
     public String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions {
         Deadline deadline = new Deadline(description, by);
         tasks.addToList(deadline);
+        storage.saveTasksToLocal(tasks.getTasks());
         return ui.formatAddTask(deadline, tasks.getSize());
     }
 

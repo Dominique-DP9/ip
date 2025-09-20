@@ -70,47 +70,74 @@ public class Ui {
     }
 
     /**
-     * Klee says bye to you!
+     * Returns an exit (farewell) message from Klee herself.
      */
     public void exit() {
         System.out.println("Aww mann, you're leaving already?? (╥﹏╥) ...Well!! Come back soon to play with me again alright!!");
     }
 
     /**
-     * Klee likes to mimic you!
+     * Returns a cute but poorly executed mimicry from Klee.
      * @param input The string to be parroted back to you.
      */
     public void echo(String input) {
         System.out.println("\"" + input + "\"" + ", hehee!");
     }
 
+
+    /**
+     * Logs the addition of a task to the list.
+     *
+     * @param task The task to be added
+     * @param totalTasks Size of the task list after adding the task.
+     */
     public void updateList(Task task, int totalTasks) {
         System.out.println("OK! Adding this to your list!: ");
         System.out.println("\t" + task.toString());
         System.out.println("Now you have " + totalTasks + " tasks in the list!!! Felicitations!!");
     }
 
+    /**
+     * Logs the deletion of the list.
+     *
+     * @param task The task to be deleted.
+     * @param totalTasks Size of the task list after deleting the task.
+     */
     public void updateDelete(Task task, int totalTasks) {
         showMessage("Okay!!! I've removed this item from your list:");
         showMessage("\t" + task.toString());
         showMessage("Now you have " + totalTasks + " tasks left in the list!!! ");
     }
 
+    /**
+     * Logs the marking of a task.
+     *
+     * @param task The task to be marked as done.
+     */
     public void updateMark(Task task) {
         showMessage("You're amazing, friend!! I've marked this task as DHONE!!:");
         showMessage("\t" + task);
     }
 
+    /**
+     * Logs the un-marking of a task.
+     *
+     * @param task The task to be marked as undone.
+     */
     public void updateUnmark(Task task) {
         showMessage("AWW, it's alright! You can work on this the next time!:");
         showMessage("\t" + task);
     }
 
+    /**
+     * Logs the updated priority of a task.
+     *
+     * @param task The task whose priority is updated.
+     */
     public void updatePriority(Task task, int priority) {
         showMessage("OKAY!! I've reordered your priorities!!");
         showMessage("\t" + task + " now has a priority of:" + priority + "!!!!!");
     }
-
 
     /**
      * Throws a tantrum.
@@ -121,43 +148,101 @@ public class Ui {
 
 
 
+
     // ========== GUI METHODS ==========
+    /**
+     * Returns the formated response for adding tasks.
+     *
+     * @param task The task to be added.
+     * @param totalTasks The size of the task list after adding the task to the list.
+     * @return Adding tasks response.
+     */
     public String formatAddTask(Task task, int totalTasks) {
         return "OK! Adding this to your list!:\n\t" + task
                 + "\nNow you have " + totalTasks + " tasks in the list!!! Felicitations!!";
     }
 
-    // ========== Delete ==========
+    /**
+     * Returns the formated response for deleting tasks.
+     *
+     * @param task The task to be deleted.
+     * @param totalTasks The size of the task list after deleting the task.
+     * @return Deleting tasks response.
+     */
     public String formatDeleteTask(Task task, int totalTasks) {
         return "Okay!!! I've removed this item from your list:\n\t" + task
                 + "\nNow you have " + totalTasks + " tasks in the list!!!!! ";
     }
 
+    /**
+     * Returns a mimicked response from KleeBot.
+     *
+     * @return Mimicked response from Klee.
+     */
     public String formatEcho(String input) {
         return "\"" + input + "\"" + ", hehee!";
     }
 
+
+    /**
+     * Returns a sad message from Klee.
+     *
+     * @return Sad Klee response..
+     */
     public String formatExit() {
         return "Aww mann, you're leaving already?? (╥﹏╥) ...Well!! Come back soon to play with me again alright!!";
     }
 
+    /**
+     * Returns a tantrum from Klee.
+     *
+     * @return Tantrum response...
+     */
     public String formatTantrum() {
         return "Huh?? I'm not sure I quite understand o(╥﹏╥)o... could you be more specific please?";
     }
 
     // ========== Mark / Unmark ==========
+
+    /**
+     * Returns the formated response for marking a task.
+     *
+     * @param task The task to be marked as done.
+     * @return Response for marking a task as done.
+     */
     public String formatMarkTask(Task task) {
         return "You're amazing, friend!! I've marked this task as DHONE!!:\n\t " + task;
     }
 
+    /**
+     * Returns the formated response for un-marking a task.
+     *
+     * @param task The task to be marked as undone.
+     * @return Response for marking a task as undone.
+     */
     public String formatUnmarkTask(Task task) {
         return "AWW, it's alright! You can work on this the next time!:\n  " + task;
     }
 
+    /**
+     * Returns the formatted string for updating a task's priority.
+     *
+     * @param task
+     * @param value
+     * @return
+     */
     public String formatPriority(Task task, int value) {
-        return "OKAY!! I've reordered your priorities!!\n\t" + task + " now has a priority of:" + value + "!!!!!";
+        return String.format("OKAY!! I've reordered your priorities!!\n\t %s now has a priority of: %d!!!!!!!", task, value);
+//        return "OKAY!! I've reordered your priorities!!\n\t" + task + " now has a priority of:" + value + "!!!!!";
     }
 
+
+    /**
+     * Returns the formatted list in Kleebot's tasklist.
+     *
+     * @param tasks TaskList whose content are to be printed out.
+     * @return Formatted list of tasklist items.
+     */
     public String formatList(TaskList tasks) {
         if (tasks.getSize() == 0) {
             return "AWWW mannn :(( your task list is empty!";
@@ -169,8 +254,12 @@ public class Ui {
         return sb.toString();
     }
 
-
-    // ========== Find ==========
+    /**
+     * Returns in string format the contents of a filtered list.
+     *
+     * @param list Filtered list by a pattern
+     * @return String format of list contents.
+     */
     public String formatFind(List<String> list) {
         if (list.isEmpty()) {
             return "AWWW man :( I couldn't find anything matching your request T_T";

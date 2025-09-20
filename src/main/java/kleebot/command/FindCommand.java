@@ -9,8 +9,13 @@ import kleebot.task.TaskList;
 import kleebot.ui.KleeExceptions;
 import kleebot.ui.Ui;
 
+
+/**
+ * A command to find a task that match a given pattern.
+ */
 public class FindCommand extends Command {
     private final String expression;
+
 
     public FindCommand(String expression) {
         this.expression = expression;

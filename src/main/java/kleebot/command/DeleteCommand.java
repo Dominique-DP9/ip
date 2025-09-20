@@ -20,7 +20,7 @@ public class DeleteCommand extends Command {
      *              on the task list.
      */
     public DeleteCommand(String input) {
-        this.index = Integer.parseInt(input);
+        this.index = Integer.parseInt(input) - 1;
     }
 
     /**
@@ -42,6 +42,7 @@ public class DeleteCommand extends Command {
     public String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions {
         Task toBeDeleted = tasks.getTask(index);
         tasks.delete(index);
+        storage.saveTasksToLocal(tasks.getTasks());
         return ui.formatDeleteTask(toBeDeleted, tasks.getSize());
     }
 }

@@ -36,6 +36,7 @@ public class UnmarkCommand extends Command {
     @Override
     public String executeGUI(TaskList tasks, Ui ui, Storage storage) throws KleeExceptions {
         tasks.unmarkItem(input);
+        storage.saveTasksToLocal(tasks.getTasks());
         return ui.formatUnmarkTask(tasks.getTask(Integer.parseInt(input[1]) - 1));
     }
 }

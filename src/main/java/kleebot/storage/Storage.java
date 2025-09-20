@@ -16,9 +16,14 @@ public class Storage {
         this.filePath = filePath;
     }
 
+    /**
+     * Returns a list of tasks from a local data file.
+     *
+     * @return ArrayList of type Task
+     * @throws FileNotFoundException Exception thrown if the data file is not found.
+     */
     public ArrayList<Task> load() throws FileNotFoundException {
         ArrayList<Task> tasks = new ArrayList<>();
-//        File dir = new File("./KleeData");
         File file = new File(filePath);
         if (file.exists()) {
             try {
@@ -26,30 +31,33 @@ public class Storage {
                 while (reader.hasNextLine()) {
                     String data = reader.nextLine();
                     if (data.isEmpty()) break;
-                    String[] splitted = data.split("\\s+\\|\\s+"); // regex splits by " | " hopefully
-                    String type = splitted[0];
-                    boolean done = splitted[1].equals("1");
+                    String[] splitData = data.split("\\s+\\|\\s+"); // regex splits by " | " hopefully
+                    String type = splitData[0];
+                    boolean done = splitData[1].equals("1");
 
                     switch (type) {
                     case "T":
-                        ToDo tmp = new ToDo(splitted[2]);
+                        ToDo tmp = new ToDo(splitData[2]);
                         if (done) {
                             tmp.markAsDone();
                         }
+                        tmp.setPriority(Integer.parseInt(splitData[3]));
                         tasks.add(tmp);
                         break;
                     case "D":
-                        Deadline tmpD = new Deadline(splitted[2], splitted[3]);
+                        Deadline tmpD = new Deadline(splitData[2], splitData[3]);
                         if (done) {
                             tmpD.markAsDone();
                         }
+                        tmpD.setPriority(Integer.parseInt(splitData[4]));
                         tasks.add(tmpD);
                         break;
                     case "E":
-                        Event tmpE = new Event(splitted[2], splitted[3], splitted[4]);
+                        Event tmpE = new Event(splitData[2], splitData[3], splitData[4]);
                         if (done) {
                             tmpE.markAsDone();
                         }
+                        tmpE.setPriority(Integer.parseInt(splitData[5]));
                         tasks.add(tmpE);
                         break;
                     default:
@@ -60,7 +68,7 @@ public class Storage {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
-        } else { // file doesnt exist yet
+        } else { // file doesn't exist yet
             try {
                 boolean _success = file.createNewFile();
                 assert _success : "Failed to create new file at: " + filePath;
@@ -70,13 +78,14 @@ public class Storage {
                 e.printStackTrace();
             }
         }
-//        } else { // /data folder doesn't exist yet
-//            boolean _success = dir.mkdirs();
-//            System.out.println("Directory created at" + dir);
-//        }
         return tasks;
     }
 
+    /**
+     * Writes all tasks recorded during the application's runtime to the local data file.
+     *
+     * @param tasks ArrayList of {@code Tasks} to be saved.
+     */
     public void saveTasksToLocal(ArrayList<Task> tasks) {
         try {
             FileWriter writer = new FileWriter(filePath, false); // 2nd param decides whether to overwrite the file or not
@@ -87,6 +96,7 @@ public class Storage {
                 } else if (task instanceof Event e) {
                     fileString += " | " + e.getFrom() + " | " + e.getTo();
                 }
+                fileString += " | " + task.getPriority();
                 writer.write(fileString + "\n");
             }
             writer.close();

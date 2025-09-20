@@ -16,64 +16,17 @@ public class Parser {
 
     public static Command parse(String fullCommand) throws KleeExceptions {
         String[] parts = fullCommand.split("\\s+");
-        String taskDescription;
+//        String taskDescription;
         assert parts.length > 0 : "Command parts should not be empty";
-
         switch (parts[0]) {
         case "bye":
             return new ExitCommand();
         case "todo":
-            if (parts.length <= 1) {
-                throw new KleeExceptions(Ui.ErrorMessage.MISSING_DETAILS.getMessage());
-            }
-            taskDescription = extractString(parts, 1, parts.length);
-            return new TodoCommand(taskDescription);
+            return handleTodo(parts);
         case "deadline":
-            if (parts.length <= 1) {
-                throw new KleeExceptions(Ui.ErrorMessage.MISSING_DETAILS.getMessage());
-            }
-
-            int byIndex = findParamIndex(parts, "/by");
-
-            if (byIndex == -1) {
-                throw new KleeExceptions(Ui.ErrorMessage.MISSING_BY.getMessage());
-            }
-            if (byIndex == parts.length - 1) {
-                throw new KleeExceptions(Ui.ErrorMessage.MISSING_BY_2.getMessage());
-            }
-
-            taskDescription = extractString(parts, 1, byIndex);
-            String by = extractString(parts, byIndex + 1, parts.length);
-            String dated_by = Parser.parseDateStr(by); // returns the string format in MMM dd yyyy if the input is a valid date
-            return new DeadlineCommand(taskDescription, dated_by);
+            return handleDeadline(parts);
         case "event":
-            if (parts.length <= 1) {
-                throw new KleeExceptions(Ui.ErrorMessage.MISSING_DETAILS.getMessage());
-            }
-            int fromIndex = findParamIndex(parts, "/from");
-            if (fromIndex == -1) {
-                throw new KleeExceptions(Ui.ErrorMessage.MISSING_FROM.getMessage());
-            }
-            // test is separated from others bc the toIndex stream uses fromIndex
-
-            int toIndex = findParamIndex(parts, "/to", fromIndex);
-            if (toIndex == -1) {
-                throw new KleeExceptions(Ui.ErrorMessage.MISSING_TO.getMessage());
-            }
-            if (fromIndex == toIndex - 1) {
-                throw new KleeExceptions("Gimmie more info on when it starts!!");
-            }
-            if (toIndex == parts.length - 1) {
-                throw new KleeExceptions("Gimmie more info on when it ends!!");
-            }
-
-            taskDescription = extractString(parts, 1, fromIndex);
-            String from = extractString(parts, fromIndex + 1, toIndex);
-            String to = extractString(parts, toIndex + 1, parts.length);
-
-            String dated_from = Parser.parseDateStr(from);
-            String dated_to = Parser.parseDateStr(to);
-            return new EventCommand(taskDescription, dated_from, dated_to);
+            return handleEvent(parts);
         case "list":
             return new ListCommand();
         case "mark":
@@ -103,6 +56,64 @@ public class Parser {
     }
 
 
+
+    private static Command handleTodo(String[] parts) throws KleeExceptions {
+        if (parts.length <= 1) {
+            throw new KleeExceptions(Ui.ErrorMessage.MISSING_DETAILS.getMessage());
+        }
+        String taskDescription = extractString(parts, 1, parts.length);
+        return new TodoCommand(taskDescription);
+    }
+
+    private static Command handleDeadline(String[] parts) throws KleeExceptions {
+        if (parts.length <= 1) {
+            throw new KleeExceptions(Ui.ErrorMessage.MISSING_DETAILS.getMessage());
+        }
+
+        int byIndex = findParamIndex(parts, "/by");
+
+        if (byIndex == -1) {
+            throw new KleeExceptions(Ui.ErrorMessage.MISSING_BY.getMessage());
+        }
+        if (byIndex == parts.length - 1) {
+            throw new KleeExceptions(Ui.ErrorMessage.MISSING_BY_2.getMessage());
+        }
+
+        String taskDescription = extractString(parts, 1, byIndex);
+        String by = extractString(parts, byIndex + 1, parts.length);
+        String dated_by = Parser.parseDateStr(by); // returns the string format in MMM dd yyyy if the input is a valid date
+        return new DeadlineCommand(taskDescription, dated_by);
+    }
+
+    private static Command handleEvent(String[] parts) throws KleeExceptions {
+        if (parts.length <= 1) {
+            throw new KleeExceptions(Ui.ErrorMessage.MISSING_DETAILS.getMessage());
+        }
+        int fromIndex = findParamIndex(parts, "/from");
+        if (fromIndex == -1) {
+            throw new KleeExceptions(Ui.ErrorMessage.MISSING_FROM.getMessage());
+        }
+        // test is separated from others bc the toIndex stream uses fromIndex
+
+        int toIndex = findParamIndex(parts, "/to", fromIndex);
+        if (toIndex == -1) {
+            throw new KleeExceptions(Ui.ErrorMessage.MISSING_TO.getMessage());
+        }
+        if (fromIndex == toIndex - 1) {
+            throw new KleeExceptions("Gimmie more info on when it starts!!");
+        }
+        if (toIndex == parts.length - 1) {
+            throw new KleeExceptions("Gimmie more info on when it ends!!");
+        }
+
+        String taskDescription = extractString(parts, 1, fromIndex);
+        String from = extractString(parts, fromIndex + 1, toIndex);
+        String to = extractString(parts, toIndex + 1, parts.length);
+
+        String dated_from = Parser.parseDateStr(from);
+        String dated_to = Parser.parseDateStr(to);
+        return new EventCommand(taskDescription, dated_from, dated_to);
+    }
 
     public static String parseDateStr(String str) {
         assert str != null : "Date string cannot be null";
