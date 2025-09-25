@@ -1,5 +1,8 @@
 package kleebot.task;
 
+/**
+ * Represents a deadline object
+ */
 public class Deadline extends Task {
     protected String by;
 
