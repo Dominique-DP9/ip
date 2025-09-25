@@ -45,7 +45,6 @@ public class Storage {
         }
     }
 
-
     /**
      * Returns a list of tasks from a local data file.
      *
