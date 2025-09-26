@@ -17,6 +17,6 @@ Prerequisites: JDK 17, update Intellij to the most recent version.
 
 Refer to my github userdocs: https://dominique-dp9.github.io/ip/
 
-Have fun using KleeBot!!
+Have fun using KleeBot!! <3 
 
 
